@@ -4,13 +4,16 @@ def hh_mm():
     tm = input('Установить время (оставьте поле пустым для отмены): ')
     if tm == '':
         return None
-    elif len(tm.split(':')) == 2:
-        hh, mm = map(int, tm.split(':'))
-        if 0 <= hh < 24 and 0 <= mm < 60:
-            return hh, mm
     else:
-        print('формат должен быть ЧЧ:ММ')
-    return hh_mm()
+        try:
+            if len(tm.split(':')) == 2:
+                hh, mm = map(int, tm.split(':'))
+                if 0 <= hh < 24 and 0 <= mm < 60:
+                    return hh, mm
+            raise ValueError
+        except ValueError:
+            print('формат должен быть ЧЧ:ММ')
+            return hh_mm()
 def signal_type():
     st = input('Звуковое уведомление? y/n или название файла из каталога: ')
     if st == 'n' or st == '':
