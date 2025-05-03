@@ -15,14 +15,14 @@ def hh_mm():
             print('формат должен быть ЧЧ:ММ')
             return hh_mm()
 def signal_type():
-    st = input('Звуковое уведомление (y/n или название файла из каталога): ')
+    st = input('Звуковое уведомление (Y/N или название файла из каталога): ')
     if st.lower() == 'n' or st == '':
         st = None
     elif st.lower() == 'y':
         st = 'default'
     return st
 def repeat():
-    rp = input('Повторять (y/n или дни недели через пробел): ')
+    rp = input('Повторять (Y/N или дни недели через пробел): ')
     if rp.lower() == 'n' or rp == '':
         return False
     elif rp.lower() == 'y':
@@ -57,7 +57,11 @@ def alarm(signal):
             winsound.PlaySound(signal, winsound.SND_NODEFAULT)
         except RuntimeError:
             winsound.Beep(1500, 3000)
-
+def del_check():
+    if input('Отключить этот будильник (Y/любое другое значение для "N"): ').lower() == 'y':
+        return True
+    else:
+        return False
 all_tms = {}
 while True:
     cl = hh_mm()
@@ -85,6 +89,9 @@ while True:
                 continue
             elif cur_wd in all_tms[cur_hr][cur_mn][1]:
                 alarm(all_tms[cur_hr][cur_mn][0])
+                if del_check():
+                    del all_tms[cur_hr][cur_mn]
+                    continue
         time.sleep(60 - cur_sc)
     else:
         time.sleep((60 - cur_mn) * 60 - cur_sc)
